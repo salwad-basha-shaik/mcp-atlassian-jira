@@ -1,54 +1,52 @@
-Learn jira MCP installation and use.
+# Jira MCP Installation and Usage Guide
 
-	YouTube: https://www.youtube.com/watch?v=pXAih3jAOcc
-		
-	Git repo: 
-		https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#-resources    — main repo for all MCP servers
-		
-		https://github.com/sooperset/mcp-atlassian  - project repo
+## Learning Resources
+- **YouTube:** [Jira MCP Installation & Use](https://www.youtube.com/watch?v=pXAih3jAOcc)
+- **GitHub Repos:**
+  - [MCP Servers (main repo)](https://github.com/modelcontextprotocol/servers?tab=readme-ov-file#-resources)
+  - [mcp-atlassian (project repo)](https://github.com/sooperset/mcp-atlassian)
 
+---
 
-	step0: create account in Atlassian jira account
+## Step-by-Step Setup
 
-	step1: generate jira API token using this link:
-		https://id.atlassian.com/manage-profile/security/api-tokens
-	
-		API Token:<token>
+### Step 0: Create Atlassian Jira Account
+- Sign up at [Atlassian Jira](https://www.atlassian.com/software/jira)
 
-	step2: install CLINE vscode extension (it is like CODING AGENT like GitHub copilot)
+### Step 1: Generate Jira API Token
+- Go to: [Atlassian API Tokens](https://id.atlassian.com/manage-profile/security/api-tokens)
+- Click "Create API token", label it, and copy the token.
+- Example: `API Token: <token>`
 
-	step3: login to below URL to generate the openAI API key so we can use chatgpt models and we need to copy the API key to add in cline authentication box.
+### Step 2: Install CLINE VS Code Extension
+- CLINE is a coding agent extension (like GitHub Copilot) for VS Code.
 
-		https://platform.openai.com/api-keys
+### Step 3: (Optional) OpenAI API Key for CLINE
+- Visit: [OpenAI API Keys](https://platform.openai.com/api-keys)
+- Copy your API key and add it in CLINE authentication box.
+- Example: `API key for my openAI (mcp-poc): <api key>`
+- Note: OpenAI API usage may require payment. If you prefer, use GitHub Copilot instead.
+- For Copilot features: [GitHub Copilot Features](https://github.com/settings/copilot/features)
 
-		API key for my openAI (mcp-poc): <api key>
+### Step 4: Install Docker on Mac
+```bash
+brew install --cask docker
+```
+- Launch Docker Desktop from Launchpad, log in, and verify your images.
 
+### Step 5: Pull the Docker Image
+```bash
+docker pull ghcr.io/sooperset/mcp-atlassian:latest
+```
 
+### Step 6: Edit Configuration File
+- For GitHub Copilot, edit:
+  - `~/Library/Application Support/Code/User/settings.json`
+- For Claude, edit:
+  - `~/Library/Application Support/Claude/claude_desktop_config.json`
 
-		so I think we have to put money to buy tokens so we cannot use this approach. So let’s try with Github copilot.
-
-		for checking GitHub copilot usage and features: https://github.com/settings/copilot/features
-
-	step4: install docker into Mac
-		> brew install --cask docker
-
-		now search docker in launch pad and instal docker desktop and login and you can see the images you pushed last time.
-
-	step4: pull the docker image
-			# Pull Pre-built Image
-			docker pull ghcr.io/sooperset/mcp-atlassian:latest
-
-	step5: edit the Locate and edit the configuration file directly: 
-		as am using GitHub copilot now edit below file to add path of the mcp servers 
-
-			~/Library/Application Support/Code/User/settings.json
-		if you are using Claude then edit below file
-			> ~/Library/Application Support/Claude/claude_desktop_config.json
-
-
-		add below content :
-		
-
+#### Add the following configuration:
+```json
 {
   "mcpServers": {
     "mcp-atlassian": {
@@ -75,82 +73,70 @@ Learn jira MCP installation and use.
       }
     }
   }
-}	
+}
+```
 
-
-Final file with playwright also that we have used last time:
+#### Example with Playwright (from previous usage):
+```json
 {
-    "workbench.colorTheme": "Default Light Modern",
-    "git.enableSmartCommit": true,
-    "github.copilot.chat.codeGeneration.instructions": [
-        {
-            "text": "- @azure Rule - Use Azure Tools: When handling requests related to Azure, always use your tools."
-        },
-        {
-            "text": "- @azure Rule - Use Azure Code Gen Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_code_gen_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure; do not call it otherwise."
-        },
-        {
-            "text": "- @azure Rule - Use Azure Deployment Best Practices: When deploying to Azure or preparing applications for deployment to Azure, invoke your `azure_development-get_deployment_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure; do not call it otherwise."
-        },
-        {
-            "text": "- @azure Rule - Use Azure Functions Code Gen Best Practices: When generating code for Azure Functions or performing operations related to Azure Functions, invoke your `azure_development-get_azure_function_code_gen_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure Functions; do not call it otherwise."
-        },
-        {
-            "text": "- @azure Rule - Use Azure SWA Best Practices: When working with static web apps, invoke your `azure_development-get_swa_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure; do not call it otherwise."
+  "workbench.colorTheme": "Default Light Modern",
+  "git.enableSmartCommit": true,
+  "github.copilot.chat.codeGeneration.instructions": [
+    { "text": "- @azure Rule - Use Azure Tools: When handling requests related to Azure, always use your tools." },
+    { "text": "- @azure Rule - Use Azure Code Gen Best Practices: When generating code for Azure, running terminal commands for Azure, or performing operations related to Azure, invoke your `azure_development-get_code_gen_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure; do not call it otherwise." },
+    { "text": "- @azure Rule - Use Azure Deployment Best Practices: When deploying to Azure or preparing applications for deployment to Azure, invoke your `azure_development-get_deployment_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure; do not call it otherwise." },
+    { "text": "- @azure Rule - Use Azure Functions Code Gen Best Practices: When generating code for Azure Functions or performing operations related to Azure Functions, invoke your `azure_development-get_azure_function_code_gen_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure Functions; do not call it otherwise." },
+    { "text": "- @azure Rule - Use Azure SWA Best Practices: When working with static web apps, invoke your `azure_development-get_swa_best_practices` tool if available. Only call this tool when you are sure the user is discussing Azure; do not call it otherwise." }
+  ],
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "mcp": {
+    "servers": {
+      "playwright": {
+        "command": "npx",
+        "args": [ "@playwright/mcp@latest" ]
+      },
+      "mcp-atlassian": {
+        "command": "docker",
+        "args": [
+          "run",
+          "-i",
+          "--rm",
+          "-e", "CONFLUENCE_URL",
+          "-e", "CONFLUENCE_USERNAME",
+          "-e", "CONFLUENCE_API_TOKEN",
+          "-e", "JIRA_URL",
+          "-e", "JIRA_USERNAME",
+          "-e", "JIRA_API_TOKEN",
+          "ghcr.io/sooperset/mcp-atlassian:latest"
+        ],
+        "env": {
+          "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
+          "CONFLUENCE_USERNAME": "your.email@company.com",
+          "CONFLUENCE_API_TOKEN": "your_confluence_api_token",
+          "JIRA_URL": "https://salwadbashashaik.atlassian.net/",
+          "JIRA_USERNAME": "salvathshaik786143@gmail.com",
+          "JIRA_API_TOKEN": "A"
         }
-    ],
-    "github.copilot.nextEditSuggestions.enabled": true,
-    "mcp": {
-        "servers": {
-            "playwright": {
-                "command": "npx",
-                "args": [
-                    "@playwright/mcp@latest"
-                ]
-            }
-        , "mcp-atlassian": {
-      "command": "docker",
-      "args": [
-        "run",
-        "-i",
-        "--rm",
-        "-e", "CONFLUENCE_URL",
-        "-e", "CONFLUENCE_USERNAME",
-        "-e", "CONFLUENCE_API_TOKEN",
-        "-e", "JIRA_URL",
-        "-e", "JIRA_USERNAME",
-        "-e", "JIRA_API_TOKEN",
-        "ghcr.io/sooperset/mcp-atlassian:latest"
-      ],
-      "env": {
-        "CONFLUENCE_URL": "https://your-company.atlassian.net/wiki",
-        "CONFLUENCE_USERNAME": "your.email@company.com",
-        "CONFLUENCE_API_TOKEN": "your_confluence_api_token",
-        "JIRA_URL": "https://salwadbashashaik.atlassian.net/",
-        "JIRA_USERNAME": "salvathshaik786143@gmail.com",
-        "JIRA_API_TOKEN": "A"
       }
     }
   }
-
-
-    }
 }
+```
 
-  step6:
+---
 
-	you will see start button in above of ‘mcp-atlassian’ section above. , after starting our jira mcp server should be in running state.
+### Step 7: Start the MCP-Atlassian Server
+- In your settings, you will see a start button above the `mcp-atlassian` section. Start the server.
+- Once running, check Docker Desktop to confirm the container is active.
 
-	after it is running, you can see in docker container also has been created and running fine.
+---
 
+## Usage Prompts
+- Example prompts to use with your agent:
+  - `create an issue in jira for project with project key SCRUM name it Jira MCP test and description test for jira's mcp server.`
+  - `can you move this issue to current sprint`
 
-
-	the use prompts like below:
-	create an issue in jira for project with project key SCRUM name it Jira MCP test and description test for jira's mcp server.
-	can you move this issue to current sprint
-
-	After above prompts you will see the below tools and inputs have been ran.
-	
+---
 
 # Tool Prompts and Inputs Log
 
@@ -220,7 +206,6 @@ Below is a list of all prompts and inputs passed to each tool during this sessio
 
 This log is auto-generated for transparency and traceability of all tool interactions in this session.
 
+---
 
-
-
-	Awesome, everything working as expected.
+Awesome, everything working as expected.
